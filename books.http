@@ -1,0 +1,39 @@
+GET http://localhost:3000/books/
+
+###
+
+POST http://localhost:3000/books/
+Content-Type: application/json
+
+{
+        "bookID": 11,
+        "title": "Harry Potter",
+        "authorID": 107,
+        "genreID": 207,
+        "pages": 223,
+        "publishedDate": "2000-06-26"
+}
+
+
+###
+
+PUT http://localhost:3000/books/11/
+Content-Type: application/json
+
+{
+        "title": "Harry Potter",
+        "authorID": 107,
+        "genreID": 207,
+        "pages": 225,
+        "publishedDate": "2002-06-26"
+}
+
+###
+
+DELETE http://localhost:3000/books/11/
+
+
+###
+
+GET http://localhost:3000/books/11/
+
