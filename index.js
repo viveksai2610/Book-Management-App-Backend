@@ -42,7 +42,7 @@ app.get('/books/', async (request, response) => {
 
 app.post('/books/', async (request, response) => {
   const bookDetails = request.body
-  const {bookID, title, authorID, genreID, pages, publishedDate} = bookDetails
+  const {bookID, title, author, genre, pages, publishedDate} = bookDetails
 
   const getBookQuery = `SELECT
       *
@@ -53,13 +53,13 @@ app.post('/books/', async (request, response) => {
   const book = await db.get(getBookQuery)
 
   if (book === undefined) {
-    const addBookQuery = `INSERT INTO books (bookID, title, authorID, GenreID, pages, publishedDate)
+    const addBookQuery = `INSERT INTO books (bookID, title, author, Genre, pages, publishedDate)
     VALUES
       (
          ${bookID},
         '${title}',
-         ${authorID},
-         ${genreID},
+         ${author},
+         ${genre},
          ${pages},
         '${publishedDate}'
       );`
@@ -74,7 +74,7 @@ app.post('/books/', async (request, response) => {
 app.put('/books/:bookId/', async (request, response) => {
   const {bookId} = request.params
   const bookDetails = request.body
-  const {title, authorID, genreID, pages, publishedDate} = bookDetails
+  const {title, author, genre, pages, publishedDate} = bookDetails
 
   const getBookQuery = `SELECT
       *
@@ -89,8 +89,8 @@ app.put('/books/:bookId/', async (request, response) => {
       books
     SET
       title='${title}',
-      authorID = ${authorID},
-      genreID = ${genreID},
+      authorID = ${author},
+      genreID = ${genre},
       pages = ${pages},
       publishedDate = "${publishedDate}" 
     WHERE
@@ -112,15 +112,3 @@ app.delete('/books/:bookId/', async (request, response) => {
   response.send('Book Deleted Successfully')
 })
 
-app.get('/books/:bookId/', async (request, response) => {
-  const {bookId} = request.params
-  const getBookQuery = `SELECT
-      *
-    FROM
-      (books NATURAL JOIN genres) AS T INNER JOIN authors
-      ON T.authorID = authors.authorID
-    WHERE
-      books.bookID = ${bookId};`
-  const book = await db.get(getBookQuery)
-  response.send(book)
-})
