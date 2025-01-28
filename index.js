@@ -40,6 +40,18 @@ app.get('/books/', async (request, response) => {
   response.send(booksArray)
 })
 
+app.get('/books/:bookId/', async (request, response) => {
+  const {bookId} = request.params
+  const getBookQuery = `SELECT
+      *
+    FROM
+      books
+    WHERE bookID = ${bookId};`
+  const bookArray = await db.all(getBookQuery)
+  response.send(bookArray)
+})
+
+
 app.post('/books/', async (request, response) => {
   const bookDetails = request.body
   const {bookID, title, author, genre, pages, publishedDate} = bookDetails
