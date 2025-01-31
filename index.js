@@ -37,6 +37,7 @@ app.get('/books/', async (request, response) => {
     ORDER BY
        bookID;`
   const booksArray = await db.all(getBooksQuery)
+  response.status(200)
   response.send(booksArray)
 })
 
@@ -47,38 +48,41 @@ app.get('/books/:bookId/', async (request, response) => {
     FROM
       books
     WHERE bookID = ${bookId};`
-  const bookArray = await db.all(getBookQuery)
+  const bookArray = await db.get(getBookQuery)
+  response.status(200)
   response.send(bookArray)
 })
 
 
 app.post('/books/', async (request, response) => {
   const bookDetails = request.body
-  const {bookID, title, author, genre, pages, publishedDate} = bookDetails
+  const {bookId, title, author, genre, pages, publishedDate} = bookDetails
 
   const getBookQuery = `SELECT
       *
     FROM
       books
     WHERE
-      bookID = ${bookID};`
+      bookID = ${bookId};`
   const book = await db.get(getBookQuery)
 
   if (book === undefined) {
-    const addBookQuery = `INSERT INTO books (bookID, title, author, Genre, pages, publishedDate)
+    const addBookQuery = `INSERT INTO books (bookID, title, author, genre, pages, publishedDate)
     VALUES
       (
-         ${bookID},
+         ${bookId},
         '${title}',
-         ${author},
-         ${genre},
+        '${author}',
+        '${genre}',
          ${pages},
         '${publishedDate}'
       );`
 
     await db.run(addBookQuery)
+    response.status(200)
     response.send('Book Added Successfully')
   } else {
+    response.status(400)
     response.send('Enter valid book ID')
   }
 })
@@ -101,15 +105,17 @@ app.put('/books/:bookId/', async (request, response) => {
       books
     SET
       title='${title}',
-      authorID = ${author},
-      genreID = ${genre},
+      author = '${author}',
+      genre = '${genre}',
       pages = ${pages},
-      publishedDate = "${publishedDate}" 
+      publishedDate = '${publishedDate}' 
     WHERE
       bookID = ${bookId};`
     await db.run(updateBookQuery)
+    response.status(200)
     response.send('Book Updated Successfully')
   } else {
+    response.status(400)
     response.send('Enter valid book ID')
   }
 })
@@ -121,6 +127,7 @@ app.delete('/books/:bookId/', async (request, response) => {
     WHERE
       bookID = ${bookId};`
   await db.run(deleteBookQuery)
+  response.status(200)
   response.send('Book Deleted Successfully')
 })
 

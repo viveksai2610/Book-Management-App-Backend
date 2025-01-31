@@ -6,26 +6,26 @@ POST http://localhost:3000/books/
 Content-Type: application/json
 
 {
-        "bookID": 11,
-        "title": "Harry Potter",
-        "authorID": 107,
-        "genreID": 207,
-        "pages": 223,
-        "publishedDate": "2000-06-26"
+        "bookId": 60,
+        "title": "The Watcher",
+        "author": "Dean Koontz",
+        "genre": "Thriller",
+        "pages": "470",
+        "publishedDate": "1995-06-17"
 }
 
 
 ###
 
-PUT http://localhost:3000/books/11/
+PUT http://localhost:3000/books/60/
 Content-Type: application/json
 
 {
-        "title": "Harry Potter",
-        "authorID": 107,
-        "genreID": 207,
-        "pages": 225,
-        "publishedDate": "2002-06-26"
+        "title": "The Watcher",
+        "author": "Dean Koontz",
+        "genre": "Thriller",
+        "pages": "490",
+        "publishedDate": "1995-06-17"
 }
 
 ###
